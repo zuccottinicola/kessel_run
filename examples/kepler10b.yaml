@@ -1,0 +1,11 @@
+transit:
+  name: "Kepler-10 b"
+  t0: 0.0
+  per: 0.83749
+  rp: 0.012581
+  a: 3.6
+  inc: 89.38
+  ecc: 0.0
+  w: 90.0
+  u: [0.118, 0.167]
+  limb_dark: "quadratic"
