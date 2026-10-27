@@ -41,6 +41,16 @@ daneel -i <input_file> --transit [--output lightcurve.png]
 - `-d, --detect`: Reserved for the course detection exercise
 - `-a, --atmosphere`: Reserved for the course atmosphere exercise
 - `-o, --output`: Output path for the transit plot (default: `lc.png`)
+  
+### Plot the light curve
+
+Plot the transit light curve of the planet defined in a parameters file:
+
+```bash
+daneel -i path_to_the_parameters.yaml -t
+```
+
+Use `-o name.png` to choose the output file (default: `lc.png`).
 
 ### Examples
 
