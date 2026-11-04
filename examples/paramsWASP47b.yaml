@@ -1,0 +1,13 @@
+transit:
+  t0: 0
+  per: 4.159147
+  rp: 0.10342
+  a: 10.9194
+  inc: 89.0
+  ecc: 0.007
+  w: 2.4
+  u: [0.2803, 0.11141]
+  limb_dark: "quadratic"
+classifier:
+  type: cnn
+
