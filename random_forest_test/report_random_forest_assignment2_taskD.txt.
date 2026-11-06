@@ -1,0 +1,41 @@
+RANDOM FOREST - ASSIGNMENT 2, TASK D
+
+
+Config 0: n_estimators = 1, max_depth = 500
+
+                  Pred Non-Planet   Pred Planet
+True Non-Planet               60            35
+True Planet                   31            63
+Precision (Planet)     : 63/98  = 0.6429
+Precision (Non-Planet) : 60/91  = 0.6593
+Accuracy               : 123/189 = 0.6508
+
+
+Config 1: n_estimators = 500, max_depth = 1
+
+                  Pred Non-Planet   Pred Planet
+True Non-Planet               59            36
+True Planet                    2            92
+Precision (Planet)     : 92/128 = 0.7188
+Precision (Non-Planet) : 59/61  = 0.9672
+Accuracy               : 151/189 = 0.7989
+
+
+Config 2: n_estimators = 100, max_depth = 5
+
+                  Pred Non-Planet   Pred Planet
+True Non-Planet               71            24
+True Planet                    2            92
+Precision (Planet)     : 92/116 = 0.7931
+Precision (Non-Planet) : 71/73  = 0.9726
+Accuracy               : 163/189 = 0.8624
+
+
+Config 3: n_estimators = 200, max_depth = 10
+
+                  Pred Non-Planet   Pred Planet
+True Non-Planet               70            25
+True Planet                    1            93
+Precision (Planet)     : 93/118 = 0.7881
+Precision (Non-Planet) : 70/71  = 0.9859
+Accuracy               : 163/189 = 0.8624
