@@ -1,0 +1,49 @@
+DECISION TREE - ASSIGNMENT 2, TASK E
+
+Model               : sklearn.tree.DecisionTreeClassifier
+Parameters          : max_depth=5, min_samples_leaf=1, class_weight=None
+Threshold           : optimal (Youden's J on the ROC curve), as for the RFs
+
+Why a Decision Tree?
+
+A single tree is the base learner of the Random Forest. 
+Comparing it with the forest at equal depth isolates the effect of ensembling from the effect of the tree model itself.
+
+Decision Tree, max_depth = 5
+
+Threshold: 0.2778 (default 0.5) | TPR = 0.8511, FPR = 0.2211
+AUC-ROC: 0.7900
+Accuracy @0.5    : 0.7884 (78.84%)
+Accuracy @0.2778 : 0.8148 (81.48%)
+
+                  Pred Non-Planet   Pred Planet
+True Non-Planet               74            21
+True Planet                   14            80
+
+Precision (Planet)     : 80/101 = 0.7921
+Precision (Non-Planet) : 74/88  = 0.8409
+Recall (Planet)        : 80/94  = 0.8511
+Recall (Non-Planet)    : 74/95  = 0.7789
+F1 (Planet)            : 0.8205
+Accuracy               : 154/189 = 0.8148
+
+
+Comparison with the Random Forest results (same split)
+
+Model                       Precision(Planet)  Recall(Planet)  Accuracy
+RF Config 0 (1 tree, d=500)      0.6750            0.5745       0.6508
+RF Config 1 (500 trees, d=1)     0.7040            0.9362       0.7725
+RF Config 2 (100 trees, d=5)     0.7965            0.9574       0.8571
+RF Config 3 (200 trees, d=10)    0.8017            0.9894       0.8730
+Decision Tree (d=5)              0.7921            0.8511       0.8148
+
+
+
+Observations
+- At equal depth (5), the Decision Tree and RF Config 2 have almost the same Planet precision..
+  The gain from the forest is almost entirely in recall, which drives accuracy from 0.8148 to 0.8571.
+- Non-Planet precision shows the same pattern, because the tree misses more planets.
+- The Decision Tree beats the two weakest forests.
+- The best model remains RF Config 3.
+- All results come from one split of 189 test samples, so differences of a few samples are not statistically meaningful.
+  Cross-validation would be needed to confirm the ranking.
