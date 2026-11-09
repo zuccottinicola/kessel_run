@@ -38,7 +38,7 @@ daneel -i <input_file> --transit [--output lightcurve.png]
 
 - `-i, --input`: Input parameter file (required)
 - `-t, --transit`: Generate a transit light curve from the YAML input
-- `-d, --detect`: Reserved for the course detection exercise
+- `-d, --detection {rf,cnn}`: Run exoplanet detection with the chosen algorithm (`rf` = Random Forest; `cnn` not implemented yet)
 - `-a, --atmosphere`: Reserved for the course atmosphere exercise
 - `-o, --output`: Output path for the transit plot (default: `lc.png`)
   
@@ -52,19 +52,32 @@ daneel -i path_to_the_parameters.yaml -t
 
 Use `-o name.png` to choose the output file (default: `lc.png`).
 
-### Examples
+### Random Forest detection (Assignment 2, Task G)
+
+Train and test a Random Forest classifier on the TESS light curves:
 
 ```bash
-# Run exoplanet detection
-daneel -i examples/params.yaml --transit --output lightcurve.png
-
-# Run atmospheric characterization
-daneel -i examples/params.yaml --detect
-
-# Run both detection and atmospheric analysis
-daneel -i examples/params.yaml --atmosphere
+daneel -i examples/parameters_taskG.yaml -d rf
 ```
 
+The YAML file contains the path to the dataset and the Random Forest settings
+(number of trees, maximum depth, ...). The dataset `tess_data.csv` is not in the
+repository: put it in `../datasets/` and run the command from the repository root.
+
+The command prints the OOB score, the AUC, the accuracy and the confusion matrix,
+both at the default threshold (0.5) and at the optimal threshold.
+
+### Examples
+```bash
+# Plot a transit light curve
+daneel -i examples/params.yaml --transit --output lightcurve.png
+
+# Run Random Forest detection on the TESS dataset
+daneel -i examples/parameters_taskG.yaml --detection rf
+
+# Run atmospheric characterisation (not implemented yet)
+daneel -i examples/params.yaml --atmosphere
+```
 ## Input File Format
 
 The input file should be a YAML file containing the necessary parameters for the analysis.

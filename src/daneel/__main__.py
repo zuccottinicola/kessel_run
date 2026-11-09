@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 #from daneel.detection import TransitModel
 from daneel.parameters import Parameters
 from daneel.detection.transit import transit
+from daneel.detection.classifiers import RandomForestClassifier  # NEW (Task G)
+from daneel.detection.data_process import load_data              # NEW (Task G)
 
 
 def main():
@@ -21,7 +23,8 @@ def main():
     actions = parser.add_mutually_exclusive_group(required=True)
     actions.add_argument("-t", "--transit", action="store_true", help="Plot a transit light curve")
 
-    actions.add_argument("-d", "--detect", action="store_true", help="Run exoplanet detection")
+    # CHANGED (Task G): -d now takes the name of the detection algorithm
+    actions.add_argument("-d", "--detection", choices=["rf", "cnn"], help="Run exoplanet detection with the chosen algorithm")
     actions.add_argument("-a", "--atmosphere", action="store_true", help="Run atmospheric characterisation")
     parser.add_argument("-o", "--output", default="lc.png", help="Output image for --transit")
 
@@ -37,8 +40,23 @@ def main():
 
         #transit = TransitModel(input_pars['transit'])
         #transit.plot_light_curve(args.output)
-    elif args.detect:
-        parser.error("detection is not implemented yet; use --transit")
+    elif args.detection == "rf":
+        # NEW (Task G): Random Forest detection, settings read from the YAML
+        det = input_pars['detection']           # detection block of the YAML
+        rf_pars = det['random_forest']          # Random Forest settings
+
+        X_train, X_test, y_train, y_test, metadata, X_raw, X_err, scaler = load_data(
+            csv_path=det['dataset_path'],
+            n_bins=det['n_bins'],
+            use_scaler=det['use_scaler'],
+            samples_per_class=det['samples_per_class'],
+        )
+
+        rf = RandomForestClassifier(**rf_pars)
+        rf.fit(X_train, y_train)
+        rf.evaluate_with_optimal_threshold(X_test, y_test)
+    elif args.detection == "cnn":
+        parser.error("CNN detection is not implemented yet")
     elif args.atmosphere:
         parser.error("atmospheric characterisation is not implemented yet; use --transit")
 
