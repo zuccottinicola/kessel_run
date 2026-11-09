@@ -1,0 +1,11 @@
+dream:
+  data_path: /ca/ext_volume/comp_astro_26/random_forest_test/tess_data.csv
+  n_points: 1000
+  epochs: 500
+  batch_size: 64
+  z_dim: 100
+  lr: 0.0002
+  sample_every: 200
+  n_samples: 8
+  seed: 0
+  output_dir: dream_output
