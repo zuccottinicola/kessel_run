@@ -1,0 +1,4 @@
+cnn:
+  csv_path: "kessel_run/random_forest_test/tess_data.csv"
+  nbins: 1000
+  model: 1
