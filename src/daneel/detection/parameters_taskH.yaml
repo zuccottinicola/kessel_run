@@ -1,4 +1,0 @@
-cnn:
-  csv_path: "/root/kessel_run/cnn_test/tess_data.csv"
-  nbins: 1000
-  model: 1

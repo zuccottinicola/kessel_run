@@ -40,6 +40,9 @@ docs = [
     "myst-parser>=3.0",
 ]
 
+cnn = ["tensorflow>=2.16"]
+gan = ["torch>=2.0"]
+
 [project.scripts]
 daneel = "daneel.__main__:main"
 
