@@ -166,7 +166,7 @@ def dream(cfg):
     ax.plot(h[:, 1], label="generator")
     ax.set_xlabel("epoch")
     ax.set_ylabel("loss")
-    ax.title("Training loss")
+    ax.set_title("Training loss")
     ax.legend()
     plt.tight_layout()
     plt.savefig(os.path.join(out_dir, "loss.png"), dpi=150)
