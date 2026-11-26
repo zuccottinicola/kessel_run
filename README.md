@@ -25,7 +25,12 @@ pip install .
 ```bash
 pip install -e '.[dev,docs]'
 ```
+### Optional dependencies
 
+```bash
+pip install '.[cnn]'  # CNN detection
+pip install '.[gan]'  # GAN generation
+```
 ## Usage
 
 After installation, you can run daneel from the command line:
@@ -38,7 +43,7 @@ daneel -i <input_file> --transit [--output lightcurve.png]
 
 - `-i, --input`: Input parameter file (required)
 - `-t, --transit`: Generate a transit light curve from the YAML input
-- `-d, --detection {rf,cnn}`: Run exoplanet detection with the chosen algorithm (`rf` = Random Forest; `cnn` not implemented yet)
+- `-d, --detection {rf,cnn}`: Run exoplanet detection with the chosen algorithm (`rf` = Random Forest; `cnn` = Convolutional Neural Network)
 - `-a, --atmosphere`: Reserved for the course atmosphere exercise
 - `-o, --output`: Output path for the transit plot (default: `lc.png`)
   
@@ -67,6 +72,44 @@ repository: put it in `../datasets/` and run the command from the repository roo
 The command prints the OOB score, the AUC, the accuracy and the confusion matrix,
 both at the default threshold (0.5) and at the optimal threshold.
 
+### CNN detection (Assignment 2, Task H)
+
+Train and evaluate a Convolutional Neural Network
+on the TESS light curves:
+
+```bash
+daneel -i examples/parameters_taskH.yaml -d cnn
+```
+
+The YAML file contains the dataset path, the number
+of bins and the selected CNN architecture.
+
+```yaml
+cnn:
+  csv_path: "../datasets/tess_data.csv"   # path to the TESS dataset
+  nbins: 1000                             # flux values per light curve
+  model: 1                                # CNN architecture: 1, 2 or 3
+```
+
+The dataset `tess_data.csv` must be placed in
+`../datasets/`. Run the command from the repository root.
+
+Three architectures are available:
+
+- Model 1: original CNN.
+- Model 2: CNN with a smaller classification head.
+- Model 3: CNN with two convolutional layers.
+
+The detection is implemented by the class `CNNClassifier` in `daneel.detection.classifiers`(methods `fit` and
+`evaluate_with_optimal_threshold`), which reuses the functions in `daneel/detection/cnn_classifier.py`. An invalid `model` value stops the
+program with a `ValueError`.
+
+The command prints the AUC, accuracy, precision,recall and optimal classification threshold.
+
+The trained model, optimal threshold, confusion matrix, training history and sample light curves are saved in the current working directory.
+
+The CNN (`-d cnn`) needs TensorFlow 
+
 ### Examples
 ```bash
 # Plot a transit light curve
@@ -74,6 +117,9 @@ daneel -i examples/params.yaml --transit --output lightcurve.png
 
 # Run Random Forest detection on the TESS dataset
 daneel -i examples/parameters_taskG.yaml --detection rf
+
+# Run CNN detection on the TESS dataset
+daneel -i examples/parameters_taskH.yaml --detection cnn
 
 # Run atmospheric characterisation (not implemented yet)
 daneel -i examples/params.yaml --atmosphere

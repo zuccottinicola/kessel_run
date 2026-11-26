@@ -1,0 +1,4 @@
+cnn:
+  csv_path: "../datasets/tess_data.csv"
+  nbins: 1000
+  model: 1

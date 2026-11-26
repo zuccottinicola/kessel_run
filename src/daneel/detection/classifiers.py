@@ -12,6 +12,7 @@ from sklearn.metrics import (
 )
 
 
+
 class RandomForestClassifier:
     """Random Forest detector for TESS exoplanet transit candidates."""
 
@@ -101,8 +102,70 @@ class RandomForestClassifier:
         # Return predictions and ROC data for further analysis.
         return y_pred_best, proba, best_thresh, (fpr, tpr, thresholds)
 
-class CNNClassifier:
-    """Placeholder for the CNN exercise."""
 
-    def fit(self, X, y):
-        raise NotImplementedError("CNN training is a course exercise")
+class CNNClassifier:
+    """CNN detector for TESS exoplanet transit candidates."""
+
+    def __init__(self, n_bins=1000, architecture=1):
+        """Build the selected CNN architecture (1, 2 or 3)."""
+
+        # Import the existing CNN builder functions
+        from daneel.detection.cnn_classifier import (
+            build_simple_cnn,
+            build_simple_cnn1,
+            build_simple_cnn2,
+        )
+
+        # Store the configuration parameters
+        self.n_bins = n_bins
+        self.architecture = architecture
+
+        # Build the CNN selected by the user
+        if self.architecture == 1:
+            self.model = build_simple_cnn(n_bins=self.n_bins)
+
+        elif self.architecture == 2:
+            self.model = build_simple_cnn1(n_bins=self.n_bins)
+
+        elif self.architecture == 3:
+            self.model = build_simple_cnn2(n_bins=self.n_bins)
+
+        else:
+            # Stop the program if the architecture is not valid
+            raise ValueError(
+                f"architecture must be 1, 2 or 3, got {self.architecture}"
+            )
+
+        # Initialize the attributes that will store the results
+        self.history = None
+        self.y_pred = None
+        self.y_pred_proba = None
+        self.threshold = None
+
+    def fit(self, X_train, y_train, X_val, y_val, epochs=200):
+        """Train the CNN and store the training history."""
+
+        # Import the existing training function
+        from daneel.detection.cnn_classifier import train_model
+
+        # Train the model using training and validation data
+        self.history = train_model(
+            self.model, X_train, y_train, X_val, y_val, epochs=epochs
+        )
+
+        # Return the classifier object
+        return self
+
+    def evaluate_with_optimal_threshold(self, X_test, y_test):
+        """Evaluate the CNN using Youden's J statistic."""
+
+        # Import the existing evaluation function
+        from daneel.detection.cnn_classifier import evaluate_with_optimal_threshold
+
+        # Evaluate the model and find the optimal threshold
+        self.y_pred, self.y_pred_proba, self.threshold = evaluate_with_optimal_threshold(
+            self.model, X_test, y_test
+        )
+
+        # Return the predictions, probability scores and threshold
+        return self.y_pred, self.y_pred_proba, self.threshold
